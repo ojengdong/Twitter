@@ -4,26 +4,27 @@ import AppRouter from "./Router";
 import { authService } from "../firebase";
 
 function App() {
-  const [init, setInit] = useState(false)
+  const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
+    // onAuthStateChanged : 상태가 바뀔때 감지
     authService.onAuthStateChanged((user) => {
-      if(user) {
+      if(user){
         setIsLoggedIn(true);
+        const uid = user.uid
       }else {
         setIsLoggedIn(false);
       }
-      setInit(true)
+      setInit(true);
     })
-    console.log(isLoggedIn)
-  },[])
+  }, []) 
   
   return (
-    <div>
-      {init ? <AppRouter isLoggedIn={isLoggedIn} /> : "initializing..." }
+    <>
+      {init ? <AppRouter isLoggedIn={isLoggedIn} /> : "Initializing..."}
       
       <footer>&copy; {new Date().getFullYear()}Nwitter</footer>
-    </div>
+    </>
   );
 }
 

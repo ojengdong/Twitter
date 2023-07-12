@@ -11,13 +11,8 @@ const AppRouter = ({isLoggedIn}) => {
     return (
         <Router>
             <Routes>
-                {isLoggdIn ? (
-                <>
-                <Route path="/"  element={<Home/>}/> 
-                </>
-                ) : (
-                <Route path="/"  element={<Auth/>}/>
-                )}
+                <Route exact path="/"  element={<Home/>}/> 
+                <Route exact path="/auth"  element={<Auth/>}/>
             </Routes>
         </Router>
     );
