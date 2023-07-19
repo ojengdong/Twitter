@@ -52,7 +52,7 @@ const Auth = () => {
     }
 
     const toggleAccount = () => setNewAccount((prev) => !prev); 
-    const onSosialClick = async (e) => {
+    const onSocialClick = async (e) => {
         const {
             currentTarget:{name},
             } = e;
@@ -62,6 +62,7 @@ const Auth = () => {
             provider = new GoogleAuthProvider();
         }else if (name === "github"){
             provider = new GithubAuthProvider();
+            console.log(provider);
         }
         if(provider){
             const data = await signInWithPopup(auth,provider);
@@ -99,10 +100,10 @@ const Auth = () => {
         </form>
         <span onClick={toggleAccount}>{newAccount ? "Sign in" : "Create Account"}</span>
         <div>
-            <button onClick={onSosialClick} name='google'>
+            <button onClick={onSocialClick} name='google'>
                 Continue with Google
             </button>
-            <button onClick={onSosialClick} name='github'>
+            <button onClick={onSocialClick} name='github'>
                 Continue with Github
             </button>
         </div>
