@@ -3,6 +3,7 @@ import { authService } from '../firebase';
 import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import {dbService} from 'firebase';
 
 const Home = () => {
     const auth = getAuth();
@@ -17,6 +18,9 @@ const Home = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        dbService.collection("nweets").add({
+            
+        });
     };
 
     const onChange = (event) => {
