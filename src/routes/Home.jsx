@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { authService, dbService } from "../firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+// getDocs : 문서 여러개 가져온다.
+import { collection, addDoc, serverTimestamp, getDocs   } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -9,6 +10,24 @@ const Home = () => {
   const auth = getAuth();
   const navigate = useNavigate();
   const [nweet, setNweet] = useState("");
+  // 기본값을 비어있는 array로 함
+  const [nweets,setNweets] = useState([]);
+
+  const getNweets = async() => {
+    const dbNweets = await getDocs(collection(dbService,"nweets"));
+    dbNweets.forEach((doc) => {
+      const newObject = {
+        // doc.data() : 데이터를 가지고 와서 풀어내는것 
+        ...doc.data(),
+        id : doc.id,
+      };
+      setNweets((prev) => [newObject,...prev])
+    })
+  }
+
+  useEffect(() => {
+    getNweets();
+  }, [])
 
   useEffect(() => {
     if (auth.currentUser == null) {
@@ -42,18 +61,28 @@ const Home = () => {
     } = event;
     setNweet(value);
   };
+  console.log(nweets );
 
   return (
-    <form action="" onSubmit={onSubmit}>
-      <input
-        value={nweet}
-        onChange={onChange}
-        type="text"
-        placeholder="What's on your mind?"
-        maxLength={120}
-      />
-      <input type="submit" value="Nweet" />
-    </form>
+    <div>
+      <form action="" onSubmit={onSubmit}>
+        <input
+          value={nweet}
+          onChange={onChange}
+          type="text"
+          placeholder="What's on your mind?"
+          maxLength={120}
+        />
+        <input type="submit" value="Nweet" />
+      </form>
+      <div>
+        {nweets.map((nweet) => (
+          <div key={nweet.id}>
+            <h4>{nweet.nweet}</h4>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
